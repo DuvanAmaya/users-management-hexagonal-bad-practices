@@ -47,7 +47,7 @@ public final class UpdateUserService implements UpdateUserUseCase {
     ensureEmailIsNotTakenByAnotherUser(newEmail, userId);
 
     final UserModel userToUpdate =
-        UserApplicationMapper.fromUpdateCommandToModel(command, current.getPassword());
+            UserApplicationMapper.fromUpdateCommandToModel(command, current.getPassword());
     final UserModel updatedUser = updateUserPort.update(userToUpdate);
 
     // Clean Code - Regla 6: parámetro booleano de control (boolean flag).
@@ -80,8 +80,8 @@ public final class UpdateUserService implements UpdateUserUseCase {
 
   private UserModel findExistingUserOrFail(final UserId userId) {
     return getUserByIdPort
-        .getById(userId)
-        .orElseThrow(() -> UserNotFoundException.becauseIdWasNotFound(userId.value()));
+            .getById(userId)
+            .orElseThrow(() -> UserNotFoundException.becauseIdWasNotFound(userId.value()));
   }
 
   private void ensureEmailIsNotTakenByAnotherUser(final UserEmail newEmail, final UserId ownerId) {
@@ -98,10 +98,10 @@ public final class UpdateUserService implements UpdateUserUseCase {
     // Sin explicación oral del autor es imposible determinar qué condición exacta
     // se está evaluando ni por qué hay lógica redundante en la segunda mitad del OR.
     if (getUserByEmailPort.getByEmail(newEmail).isPresent()
-        && !getUserByEmailPort.getByEmail(newEmail).get().getId().equals(ownerId)
-        && !getUserByEmailPort.getByEmail(newEmail).get().getEmail().value().equals(newEmail.value())
+            && !getUserByEmailPort.getByEmail(newEmail).get().getId().equals(ownerId)
+            && !getUserByEmailPort.getByEmail(newEmail).get().getEmail().value().equals(newEmail.value())
             || (getUserByEmailPort.getByEmail(newEmail).isPresent()
-                && !getUserByEmailPort.getByEmail(newEmail).get().getId().value().equals(ownerId.value()))) {
+            && !getUserByEmailPort.getByEmail(newEmail).get().getId().value().equals(ownerId.value()))) {
       throw UserAlreadyExistsException.becauseEmailAlreadyExists(newEmail.value());
     }
   }

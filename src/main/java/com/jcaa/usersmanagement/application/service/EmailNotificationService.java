@@ -20,7 +20,7 @@ public final class EmailNotificationService {
 
   private static final String SUBJECT_CREATED = "Tu cuenta ha sido creada — Gestión de Usuarios";
   private static final String SUBJECT_UPDATED =
-      "Tu cuenta ha sido actualizada — Gestión de Usuarios";
+          "Tu cuenta ha sido actualizada — Gestión de Usuarios";
 
   private static final String TOKEN_NAME     = "name";
   private static final String TOKEN_EMAIL    = "email";
@@ -44,9 +44,9 @@ public final class EmailNotificationService {
     // Clean Code - Regla 11 (evitar duplicación): la construcción de tokens del mapa
     // es idéntica a la de notifyUserUpdated — debería centralizarse.
     sendOrLog(buildDestination(user, SUBJECT_CREATED,
-        renderTemplate(loadTemplate("user-created.html"),
-            Map.of(TOKEN_NAME, user.getName().value(), TOKEN_EMAIL, user.getEmail().value(),
-                TOKEN_PASSWORD, plainPassword, TOKEN_ROLE, user.getRole().name()))));
+            renderTemplate(loadTemplate("user-created.html"),
+                    Map.of(TOKEN_NAME, user.getName().value(), TOKEN_EMAIL, user.getEmail().value(),
+                            TOKEN_PASSWORD, plainPassword, TOKEN_ROLE, user.getRole().name()))));
   }
 
   public void notifyUserUpdated(final UserModel user) {
@@ -55,9 +55,9 @@ public final class EmailNotificationService {
     // Esta lógica de orquestación debería extraerse a un método genérico privado.
     // Clean Code - Regla 25 y 26: misma sobrecompactación que arriba.
     sendOrLog(buildDestination(user, SUBJECT_UPDATED,
-        renderTemplate(loadTemplate("user-updated.html"),
-            Map.of(TOKEN_NAME, user.getName().value(), TOKEN_EMAIL, user.getEmail().value(),
-                TOKEN_ROLE, user.getRole().name(), TOKEN_STATUS, user.getStatus().name()))));
+            renderTemplate(loadTemplate("user-updated.html"),
+                    Map.of(TOKEN_NAME, user.getName().value(), TOKEN_EMAIL, user.getEmail().value(),
+                            TOKEN_ROLE, user.getRole().name(), TOKEN_STATUS, user.getStatus().name()))));
   }
 
   // Clean Code - Regla 6 (evitar parámetros booleanos de control):
@@ -67,7 +67,7 @@ public final class EmailNotificationService {
   // La regla dice: si un boolean altera el flujo, probablemente hay dos responsabilidades.
   // Solución: dos métodos separados notifyUserCreated() y notifyUserUpdated() (que ya existen).
   public void sendNotificationWithFlag(
-      final UserModel user, final boolean includePassword, final String plainPassword) {
+          final UserModel user, final boolean includePassword, final String plainPassword) {
     if (includePassword) {
       notifyUserCreated(user, plainPassword);
     } else {
@@ -76,9 +76,9 @@ public final class EmailNotificationService {
   }
 
   private static EmailDestinationModel buildDestination(
-      final UserModel user, final String subject, final String body) {
+          final UserModel user, final String subject, final String body) {
     return new EmailDestinationModel(
-        user.getEmail().value(), user.getName().value(), subject, body);
+            user.getEmail().value(), user.getName().value(), subject, body);
   }
 
   private String loadTemplate(final String templateName) {
@@ -86,7 +86,7 @@ public final class EmailNotificationService {
     try (InputStream inputStream = openResourceStream(path)) {
       if (Objects.isNull(inputStream)) {
         throw EmailSenderException.becauseSendFailed(
-            new IllegalStateException("Template not found: " + path));
+                new IllegalStateException("Template not found: " + path));
       }
       return new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
     } catch (final IOException ioException) {
@@ -100,7 +100,7 @@ public final class EmailNotificationService {
 
   // VIOLACIÓN Regla 4: método privado que no usa estado de instancia (no usa this ni campos)
   // pero NO está declarado como static. La regla dice: métodos privados sin estado deben ser static.
-  private String renderTemplate(String template, final Map<String, String> values) {
+  private static String renderTemplate(String template, final Map<String, String> values) {
     String result = template;
     for (final Map.Entry<String, String> tokenEntry : values.entrySet()) {
       final String token = "{{" + tokenEntry.getKey() + "}}";
@@ -122,9 +122,9 @@ public final class EmailNotificationService {
       emailSenderPort.send(destination);
     } catch (final EmailSenderException senderException) {
       log.log(
-          Level.WARNING,
-          "[EmailNotificationService] No se pudo enviar correo a: {0}. Causa: {1}",
-          new Object[] {destination.getDestinationEmail(), senderException.getMessage()});
+              Level.WARNING,
+              "[EmailNotificationService] No se pudo enviar correo a: {0}. Causa: {1}",
+              new Object[] {destination.getDestinationEmail(), senderException.getMessage()});
       throw senderException;
     }
   }

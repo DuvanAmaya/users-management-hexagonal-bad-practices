@@ -71,10 +71,10 @@ public class UserValidationUtils {
   // Clean Code - Regla 5 (pocos parámetros): además recibe maxInactivityDays como
   // primitivo int suelto, que podría encapsularse en un objeto de política de acceso.
   public static boolean canPerformAction(
-      final String userId,
-      final String email,
-      final String status,
-      final int maxInactivityDays) {
+          final String userId,
+          final String email,
+          final String status,
+          final int maxInactivityDays) {
     // Clean Code - Regla 17: condición larga y difícil de leer que debería extraerse.
     if (userId == null || userId.isBlank() || email == null || !email.contains("@")) {
       return false;
@@ -84,5 +84,7 @@ public class UserValidationUtils {
     return ("ACTIVE".equals(status) || "PENDING".equals(status)) && maxInactivityDays >= 0;
   }
 }
+
+
 
 

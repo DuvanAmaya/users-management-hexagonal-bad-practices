@@ -28,15 +28,15 @@ public class UserApplicationMapper {
     final String userRole  = command.role();
 
     return UserModel.create(
-        new UserId(userId),
-        new UserName(userName),
-        new UserEmail(correo),
-        UserPassword.fromPlainText(userPass),
-        UserRole.fromString(userRole));
+            new UserId(userId),
+            new UserName(userName),
+            new UserEmail(correo),
+            UserPassword.fromPlainText(userPass),
+            UserRole.fromString(userRole));
   }
 
   public static UserModel fromUpdateCommandToModel(
-      final UpdateUserCommand command, final UserPassword currentPassword) {
+          final UpdateUserCommand command, final UserPassword currentPassword) {
 
     UserPassword passwordToUse;
     if (command.password() == null || command.password().isBlank()) {
@@ -47,19 +47,19 @@ public class UserApplicationMapper {
 
     // Clean Code - Regla 24: mismo concepto que "correo" de arriba, pero renombrado
     // sin razón a "correoElectronico". El lector no puede saber si son conceptos distintos.
-    final String correoElectronico = command.email();
+    final String correo = command.email();
 
     // EFECTO CASCADA de la Regla 15 en UserModel:
     // Al usar @Data en vez de @Value, el modelo es mutable. El siguiente llamador
     // podría hacer userToUpdate.setStatus(BLOCKED) en cualquier momento después
     // de construirlo, sin pasar por ninguna regla de dominio.
     return new UserModel(
-        new UserId(command.id()),
-        new UserName(command.name()),
-        new UserEmail(correoElectronico),
-        passwordToUse,
-        UserRole.fromString(command.role()),
-        UserStatus.fromString(command.status()));
+            new UserId(command.id()),
+            new UserName(command.name()),
+            new UserEmail(correo),
+            passwordToUse,
+            UserRole.fromString(command.role()),
+            UserStatus.fromString(command.status()));
   }
 
   public static UserId fromGetUserByIdQueryToUserId(final GetUserByIdQuery query) {
