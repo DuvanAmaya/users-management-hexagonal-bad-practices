@@ -37,13 +37,13 @@ class UserCreatedDomainEventTest {
   @BeforeEach
   void setUp() {
     user =
-        new UserModel(
-            new UserId(ID),
-            new UserName(NAME),
-            new UserEmail(EMAIL),
-            UserPassword.fromHash(HASH),
-            UserRole.MEMBER,
-            UserStatus.ACTIVE);
+            new UserModel(
+                    new UserId(ID),
+                    new UserName(NAME),
+                    new UserEmail(EMAIL),
+                    UserPassword.fromHash(HASH),
+                    UserRole.MEMBER,
+                    UserStatus.ACTIVE);
   }
 
   // ── eventName
@@ -77,11 +77,11 @@ class UserCreatedDomainEventTest {
     // Assert
     assertNotNull(occurredOn, "occurredOn no debe ser null");
     assertFalse(
-        occurredOn.isBefore(before),
-        "occurredOn debe ser >= al instante anterior a la construcción");
+            occurredOn.isBefore(before),
+            "occurredOn debe ser >= al instante anterior a la construcción");
     assertFalse(
-        occurredOn.isAfter(after),
-        "occurredOn debe ser <= al instante posterior a la construcción");
+            occurredOn.isAfter(after),
+            "occurredOn debe ser <= al instante posterior a la construcción");
   }
 
   // ── user()
@@ -112,12 +112,12 @@ class UserCreatedDomainEventTest {
 
     // Assert
     assertAll(
-        "payload de UserCreatedDomainEvent",
-        () -> assertEquals(5, payload.size(), "tamaño del mapa"),
-        () -> assertEquals(ID, payload.get("id"), "id"),
-        () -> assertEquals(NAME, payload.get("name"), "name"),
-        () -> assertEquals(EMAIL, payload.get("email"), "email"),
-        () -> assertEquals(UserRole.MEMBER.name(), payload.get("role"), "role"),
-        () -> assertEquals(UserStatus.ACTIVE.name(), payload.get("status"), "status"));
+            "payload de UserCreatedDomainEvent",
+            () -> assertEquals(5, payload.size(), "tamaño del mapa"),
+            () -> assertEquals(ID, payload.get("id"), "id"),
+            () -> assertEquals(NAME, payload.get("name"), "name"),
+            () -> assertEquals(EMAIL, payload.get("email"), "email"),
+            () -> assertEquals(UserRole.MEMBER.name(), payload.get("role"), "role"),
+            () -> assertEquals(UserStatus.ACTIVE.name(), payload.get("status"), "status"));
   }
 }

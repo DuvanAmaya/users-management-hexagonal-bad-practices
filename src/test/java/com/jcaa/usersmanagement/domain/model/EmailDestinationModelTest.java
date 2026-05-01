@@ -31,11 +31,11 @@ class EmailDestinationModelTest {
 
     // Assert
     assertAll(
-        "campos de EmailDestinationModel",
-        () -> assertEquals(EMAIL, model.getDestinationEmail(), "destinationEmail"),
-        () -> assertEquals(NAME, model.getDestinationName(), "destinationName"),
-        () -> assertEquals(SUBJECT, model.getSubject(), "subject"),
-        () -> assertEquals(BODY, model.getBody(), "body"));
+            "campos de EmailDestinationModel",
+            () -> assertEquals(EMAIL, model.getDestinationEmail(), "destinationEmail"),
+            () -> assertEquals(NAME, model.getDestinationName(), "destinationName"),
+            () -> assertEquals(SUBJECT, model.getSubject(), "subject"),
+            () -> assertEquals(BODY, model.getBody(), "body"));
   }
 
   // ── Validaciones de campo
@@ -48,18 +48,18 @@ class EmailDestinationModelTest {
     // Arrange — campo 1 inválido: falla en la primera llamada a validateNotBlank
     // Act & Assert
     assertThrows(
-        NullPointerException.class, () -> new EmailDestinationModel(null, NAME, SUBJECT, BODY));
+            NullPointerException.class, () -> new EmailDestinationModel(null, NAME, SUBJECT, BODY));
   }
 
   @Test
   @DisplayName(
-      "Constructor debe lanzar IllegalArgumentException cuando destinationName está en blanco")
+          "Constructor debe lanzar IllegalArgumentException cuando destinationName está en blanco")
   void shouldThrowIaeWhenDestinationNameIsBlank() {
     // Arrange — campo 1 válido, campo 2 en blanco: falla en la segunda llamada
     // Act & Assert
     assertThrows(
-        IllegalArgumentException.class,
-        () -> new EmailDestinationModel(EMAIL, "   ", SUBJECT, BODY));
+            IllegalArgumentException.class,
+            () -> new EmailDestinationModel(EMAIL, "   ", SUBJECT, BODY));
   }
 
   @Test
@@ -68,7 +68,7 @@ class EmailDestinationModelTest {
     // Arrange — campos 1 y 2 válidos, campo 3 null: falla en la tercera llamada
     // Act & Assert
     assertThrows(
-        NullPointerException.class, () -> new EmailDestinationModel(EMAIL, NAME, null, BODY));
+            NullPointerException.class, () -> new EmailDestinationModel(EMAIL, NAME, null, BODY));
   }
 
   @Test
@@ -77,6 +77,6 @@ class EmailDestinationModelTest {
     // Arrange — campos 1, 2 y 3 válidos, campo 4 vacío: falla en la cuarta llamada
     // Act & Assert
     assertThrows(
-        IllegalArgumentException.class, () -> new EmailDestinationModel(EMAIL, NAME, SUBJECT, ""));
+            IllegalArgumentException.class, () -> new EmailDestinationModel(EMAIL, NAME, SUBJECT, ""));
   }
 }

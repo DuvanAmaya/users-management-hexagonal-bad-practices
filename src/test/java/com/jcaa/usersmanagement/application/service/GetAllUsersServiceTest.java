@@ -39,13 +39,13 @@ class GetAllUsersServiceTest {
     // VIOLACIÓN Regla 11: se eliminaron los comentarios de estructura Arrange–Act–Assert.
     // La regla exige que los bloques estén documentados con // Arrange, // Act, // Assert.
     final UserModel user =
-        new UserModel(
-            new UserId("u-001"),
-            new UserName("John Arrieta"),
-            new UserEmail("john@example.com"),
-            UserPassword.fromHash("$2a$12$abcdefghijklmnopqrstuO"),
-            UserRole.ADMIN,
-            UserStatus.ACTIVE);
+            new UserModel(
+                    new UserId("u-001"),
+                    new UserName("John Arrieta"),
+                    new UserEmail("john@example.com"),
+                    UserPassword.fromHash("$2a$12$abcdefghijklmnopqrstuO"),
+                    UserRole.ADMIN,
+                    UserStatus.ACTIVE);
     when(getAllUsersPort.getAll()).thenReturn(List.of(user));
     final List<UserModel> result = service.execute();
     // VIOLACIÓN Regla 11: se usa assertFalse(result.isEmpty()) y assertTrue(x == y)

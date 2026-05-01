@@ -63,11 +63,11 @@ class UserEmailTest {
 
   @ParameterizedTest
   @ValueSource(
-      strings = {
-        "john.arrieta@gmail.com",
-        "john-arrieta_arreita@gmail.com.co",
-        "john1234567arreita@gmail.com"
-      })
+          strings = {
+                  "john.arrieta@gmail.com",
+                  "john-arrieta_arreita@gmail.com.co",
+                  "john1234567arreita@gmail.com"
+          })
   @DisplayName("Valida que el email tenga un formato correcto con diferentes casos")
   void shouldValidateEmailFormatWithParameters(String email) {
     // Act & Assert
@@ -76,13 +76,13 @@ class UserEmailTest {
 
   @ParameterizedTest
   @ValueSource(
-      strings = {
-        "",
-        "johnarroetaarroba-gmail.com",
-        "john.arrieta@gmail",
-        "john.arrieta@.com",
-        "john arrieta@com"
-      })
+          strings = {
+                  "",
+                  "johnarroetaarroba-gmail.com",
+                  "john.arrieta@gmail",
+                  "john.arrieta@.com",
+                  "john arrieta@com"
+          })
   @DisplayName("Valida que el email tenga un formato incorrecto con diferentes casos")
   void shouldValidateEmailFormatWithInvalidParameters(String email) {
     // Act & Assert

@@ -53,13 +53,13 @@ class GetUserByIdServiceTest {
     // VIOLACIÓN Regla 11: se eliminaron los comentarios de estructura Arrange–Act–Assert.
     final GetUserByIdQuery query = new GetUserByIdQuery("u-001");
     final UserModel expected =
-        new UserModel(
-            new UserId("u-001"),
-            new UserName("John Arrieta"),
-            new UserEmail("john@example.com"),
-            UserPassword.fromHash("$2a$12$abcdefghijklmnopqrstuO"),
-            UserRole.ADMIN,
-            UserStatus.ACTIVE);
+            new UserModel(
+                    new UserId("u-001"),
+                    new UserName("John Arrieta"),
+                    new UserEmail("john@example.com"),
+                    UserPassword.fromHash("$2a$12$abcdefghijklmnopqrstuO"),
+                    UserRole.ADMIN,
+                    UserStatus.ACTIVE);
     when(getUserByIdPort.getById(any())).thenReturn(Optional.of(expected));
     final UserModel result = service.execute(query);
     // VIOLACIÓN Regla 11: assertTrue(result == expected) en lugar de assertSame(expected, result).

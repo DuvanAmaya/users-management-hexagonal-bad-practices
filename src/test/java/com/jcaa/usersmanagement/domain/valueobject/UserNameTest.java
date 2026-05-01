@@ -29,7 +29,7 @@ class UserNameTest {
 
   @ParameterizedTest
   @ValueSource(
-      strings = {"", "  ", "\t", "\n", "\r", "\f", "\b", "Jo", "Ty  ", "", "   Cy ", "Ed\t"})
+          strings = {"", "  ", "\t", "\n", "\r", "\f", "\b", "Jo", "Ty  ", "", "   Cy ", "Ed\t"})
   void shouldValidateUserNameIsNotEmptyAndMinimumLength(final String userName) {
     assertThrows(InvalidUserNameException.class, () -> new UserName(userName));
   }

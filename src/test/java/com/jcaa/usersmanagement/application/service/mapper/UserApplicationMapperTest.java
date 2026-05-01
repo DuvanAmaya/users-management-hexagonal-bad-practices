@@ -43,13 +43,13 @@ class UserApplicationMapperTest {
 
     // Assert
     assertAll(
-        "fromCreateCommandToModel()",
-        () -> assertEquals(ID,              result.getId().value(),    "id"),
-        () -> assertEquals(NAME,            result.getName().value(),  "name"),
-        () -> assertEquals(EMAIL,           result.getEmail().value(), "email"),
-        () -> assertEquals(UserRole.ADMIN,  result.getRole(),          "role"),
-        () -> assertEquals(UserStatus.PENDING, result.getStatus(),     "status debe ser PENDING"),
-        () -> assertTrue(result.getPassword().verifyPlain(PASSWORD),   "password debe ser verificable"));
+            "fromCreateCommandToModel()",
+            () -> assertEquals(ID,              result.getId().value(),    "id"),
+            () -> assertEquals(NAME,            result.getName().value(),  "name"),
+            () -> assertEquals(EMAIL,           result.getEmail().value(), "email"),
+            () -> assertEquals(UserRole.ADMIN,  result.getRole(),          "role"),
+            () -> assertEquals(UserStatus.PENDING, result.getStatus(),     "status debe ser PENDING"),
+            () -> assertTrue(result.getPassword().verifyPlain(PASSWORD),   "password debe ser verificable"));
   }
 
   // ── fromUpdateCommandToModel() — rama: nueva contraseña presente
@@ -61,22 +61,22 @@ class UserApplicationMapperTest {
     final String newPassword = "NuevoPass99";
     final UserPassword currentPassword = UserPassword.fromPlainText(PASSWORD);
     final UpdateUserCommand command =
-        new UpdateUserCommand(ID, NAME, EMAIL, newPassword, ROLE, STATUS);
+            new UpdateUserCommand(ID, NAME, EMAIL, newPassword, ROLE, STATUS);
 
     // Act
     final UserModel result =
-        UserApplicationMapper.fromUpdateCommandToModel(command, currentPassword);
+            UserApplicationMapper.fromUpdateCommandToModel(command, currentPassword);
 
     // Assert
     assertAll(
-        "fromUpdateCommandToModel() con nueva contraseña",
-        () -> assertEquals(ID,              result.getId().value(),    "id"),
-        () -> assertEquals(NAME,            result.getName().value(),  "name"),
-        () -> assertEquals(EMAIL,           result.getEmail().value(), "email"),
-        () -> assertEquals(UserRole.ADMIN,  result.getRole(),          "role"),
-        () -> assertEquals(UserStatus.ACTIVE, result.getStatus(),      "status"),
-        () -> assertTrue(result.getPassword().verifyPlain(newPassword), "debe usar la nueva contraseña"),
-        () -> assertFalse(result.getPassword().verifyPlain(PASSWORD),   "no debe verificar la contraseña anterior"));
+            "fromUpdateCommandToModel() con nueva contraseña",
+            () -> assertEquals(ID,              result.getId().value(),    "id"),
+            () -> assertEquals(NAME,            result.getName().value(),  "name"),
+            () -> assertEquals(EMAIL,           result.getEmail().value(), "email"),
+            () -> assertEquals(UserRole.ADMIN,  result.getRole(),          "role"),
+            () -> assertEquals(UserStatus.ACTIVE, result.getStatus(),      "status"),
+            () -> assertTrue(result.getPassword().verifyPlain(newPassword), "debe usar la nueva contraseña"),
+            () -> assertFalse(result.getPassword().verifyPlain(PASSWORD),   "no debe verificar la contraseña anterior"));
   }
 
   // ── fromUpdateCommandToModel() — rama: contraseña null → conserva la actual
@@ -87,15 +87,15 @@ class UserApplicationMapperTest {
     // Arrange
     final UserPassword currentPassword = UserPassword.fromPlainText(PASSWORD);
     final UpdateUserCommand command =
-        new UpdateUserCommand(ID, NAME, EMAIL, null, ROLE, STATUS);
+            new UpdateUserCommand(ID, NAME, EMAIL, null, ROLE, STATUS);
 
     // Act
     final UserModel result =
-        UserApplicationMapper.fromUpdateCommandToModel(command, currentPassword);
+            UserApplicationMapper.fromUpdateCommandToModel(command, currentPassword);
 
     // Assert
     assertSame(currentPassword, result.getPassword(),
-        "debe conservar la instancia exacta de la contraseña actual");
+            "debe conservar la instancia exacta de la contraseña actual");
   }
 
   // ── fromUpdateCommandToModel() — rama: contraseña blank → conserva la actual
@@ -106,15 +106,15 @@ class UserApplicationMapperTest {
     // Arrange
     final UserPassword currentPassword = UserPassword.fromPlainText(PASSWORD);
     final UpdateUserCommand command =
-        new UpdateUserCommand(ID, NAME, EMAIL, "   ", ROLE, STATUS);
+            new UpdateUserCommand(ID, NAME, EMAIL, "   ", ROLE, STATUS);
 
     // Act
     final UserModel result =
-        UserApplicationMapper.fromUpdateCommandToModel(command, currentPassword);
+            UserApplicationMapper.fromUpdateCommandToModel(command, currentPassword);
 
     // Assert
     assertSame(currentPassword, result.getPassword(),
-        "debe conservar la instancia exacta de la contraseña actual");
+            "debe conservar la instancia exacta de la contraseña actual");
   }
 
   // ── fromGetUserByIdQueryToUserId()

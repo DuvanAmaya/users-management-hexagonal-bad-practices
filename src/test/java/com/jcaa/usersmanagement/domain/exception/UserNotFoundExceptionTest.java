@@ -27,6 +27,6 @@ class UserNotFoundExceptionTest {
 
     // Assert
     assertTrue(
-        message.contains(userId), "el mensaje debe identificar el id del usuario no encontrado");
+            message.contains(userId), "el mensaje debe identificar el id del usuario no encontrado");
   }
 }

@@ -25,13 +25,13 @@ class EmailSenderExceptionTest {
 
     // Act
     final String message =
-        EmailSenderException.becauseSmtpFailed(destinationEmail, smtpError).getMessage();
+            EmailSenderException.becauseSmtpFailed(destinationEmail, smtpError).getMessage();
 
     // Assert
     assertAll(
-        "becauseSmtpFailed",
-        () -> assertTrue(message.contains(destinationEmail), "el mensaje debe contener el email"),
-        () -> assertTrue(message.contains(smtpError), "el mensaje debe contener el error SMTP"));
+            "becauseSmtpFailed",
+            () -> assertTrue(message.contains(destinationEmail), "el mensaje debe contener el email"),
+            () -> assertTrue(message.contains(smtpError), "el mensaje debe contener el error SMTP"));
   }
 
   // ── becauseSendFailed()
@@ -47,10 +47,10 @@ class EmailSenderExceptionTest {
 
     // Assert
     assertAll(
-        "becauseSendFailed",
-        () -> assertSame(cause, exception.getCause(), "debe encapsular la causa original"),
-        () ->
-            assertFalse(
-                exception.getMessage().isBlank(), "el mensaje por defecto no debe estar vacío"));
+            "becauseSendFailed",
+            () -> assertSame(cause, exception.getCause(), "debe encapsular la causa original"),
+            () ->
+                    assertFalse(
+                            exception.getMessage().isBlank(), "el mensaje por defecto no debe estar vacío"));
   }
 }

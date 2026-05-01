@@ -67,12 +67,12 @@ class UserPasswordTest {
     // Act
     final UserPassword fromHashUserPassword = UserPassword.fromHash(generatedHash);
     assertEquals(
-        originalUserPassword,
-        fromHashUserPassword,
-        "Los objetos UserPassword deberían ser iguales al usar el mismo hash");
+            originalUserPassword,
+            fromHashUserPassword,
+            "Los objetos UserPassword deberían ser iguales al usar el mismo hash");
     assertTrue(
-        fromHashUserPassword.verifyPlain(rawPassword),
-        "El objeto creado desde el hash debería poder verificar el password en texto plano");
+            fromHashUserPassword.verifyPlain(rawPassword),
+            "El objeto creado desde el hash debería poder verificar el password en texto plano");
   }
 
   @Test

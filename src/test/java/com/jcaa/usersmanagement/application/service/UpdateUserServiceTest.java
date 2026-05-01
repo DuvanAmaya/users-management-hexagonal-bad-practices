@@ -55,22 +55,22 @@ class UpdateUserServiceTest {
   void setUp() {
     try (final ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory()) {
       service =
-          new UpdateUserService(
-              updateUserPort,
-              getUserByIdPort,
-              getUserByEmailPort,
-              emailNotificationService,
-              validatorFactory.getValidator());
+              new UpdateUserService(
+                      updateUserPort,
+                      getUserByIdPort,
+                      getUserByEmailPort,
+                      emailNotificationService,
+                      validatorFactory.getValidator());
     }
 
     existingUser =
-        new UserModel(
-            new UserId(ID),
-            new UserName("John Arrieta"),
-            new UserEmail(EMAIL),
-            UserPassword.fromHash(HASH),
-            UserRole.MEMBER,
-            UserStatus.ACTIVE);
+            new UserModel(
+                    new UserId(ID),
+                    new UserName("John Arrieta"),
+                    new UserEmail(EMAIL),
+                    UserPassword.fromHash(HASH),
+                    UserRole.MEMBER,
+                    UserStatus.ACTIVE);
   }
 
   // ── flujo feliz
@@ -80,7 +80,7 @@ class UpdateUserServiceTest {
   void shouldUpdateUserAndNotifyWhenDataIsValid() {
     // VIOLACIÓN Regla 11: se eliminaron los comentarios de estructura Arrange–Act–Assert.
     final UpdateUserCommand command =
-        new UpdateUserCommand(ID, "John Updated", EMAIL, null, "ADMIN", "ACTIVE");
+            new UpdateUserCommand(ID, "John Updated", EMAIL, null, "ADMIN", "ACTIVE");
     when(getUserByIdPort.getById(any())).thenReturn(Optional.of(existingUser));
     when(getUserByEmailPort.getByEmail(any())).thenReturn(Optional.of(existingUser));
     when(updateUserPort.update(any())).thenReturn(existingUser);
@@ -96,7 +96,7 @@ class UpdateUserServiceTest {
   void shouldThrowWhenUserNotFound() {
     // Arrange
     final UpdateUserCommand command =
-        new UpdateUserCommand("no-existe", "Name", "a@b.com", null, "MEMBER", "ACTIVE");
+            new UpdateUserCommand("no-existe", "Name", "a@b.com", null, "MEMBER", "ACTIVE");
     when(getUserByIdPort.getById(any())).thenReturn(Optional.empty());
 
     // Act & Assert
@@ -108,20 +108,20 @@ class UpdateUserServiceTest {
 
   @Test
   @DisplayName(
-      "execute() lanza UserAlreadyExistsException cuando el email pertenece a otro usuario")
+          "execute() lanza UserAlreadyExistsException cuando el email pertenece a otro usuario")
   void shouldThrowWhenEmailBelongsToAnotherUser() {
     // Arrange
     final UpdateUserCommand command =
-        new UpdateUserCommand(ID, "John", "other@example.com", null, "MEMBER", "ACTIVE");
+            new UpdateUserCommand(ID, "John", "other@example.com", null, "MEMBER", "ACTIVE");
 
     final UserModel otherUser =
-        new UserModel(
-            new UserId("u-999"),
-            new UserName("Other User"),
-            new UserEmail("other@example.com"),
-            UserPassword.fromHash(HASH),
-            UserRole.MEMBER,
-            UserStatus.ACTIVE);
+            new UserModel(
+                    new UserId("u-999"),
+                    new UserName("Other User"),
+                    new UserEmail("other@example.com"),
+                    UserPassword.fromHash(HASH),
+                    UserRole.MEMBER,
+                    UserStatus.ACTIVE);
 
     when(getUserByIdPort.getById(any())).thenReturn(Optional.of(existingUser));
     when(getUserByEmailPort.getByEmail(any())).thenReturn(Optional.of(otherUser));
@@ -138,7 +138,7 @@ class UpdateUserServiceTest {
   void shouldAllowKeepingOwnEmail() {
     // Arrange
     final UpdateUserCommand command =
-        new UpdateUserCommand(ID, "John Updated", EMAIL, null, "ADMIN", "ACTIVE");
+            new UpdateUserCommand(ID, "John Updated", EMAIL, null, "ADMIN", "ACTIVE");
 
     when(getUserByIdPort.getById(any())).thenReturn(Optional.of(existingUser));
     when(getUserByEmailPort.getByEmail(any())).thenReturn(Optional.of(existingUser));
@@ -153,11 +153,11 @@ class UpdateUserServiceTest {
 
   @Test
   @DisplayName(
-      "execute() lanza ConstraintViolationException cuando el command tiene campos inválidos")
+          "execute() lanza ConstraintViolationException cuando el command tiene campos inválidos")
   void shouldThrowWhenCommandIsInvalid() {
     // Arrange — id en blanco y email inválido
     final UpdateUserCommand command =
-        new UpdateUserCommand("", "Jo", "no-es-email", null, "MEMBER", "ACTIVE");
+            new UpdateUserCommand("", "Jo", "no-es-email", null, "MEMBER", "ACTIVE");
 
     // Act & Assert
     assertThrows(ConstraintViolationException.class, () -> service.execute(command));

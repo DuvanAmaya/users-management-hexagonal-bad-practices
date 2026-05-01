@@ -44,7 +44,7 @@ class DeleteUserServiceTest {
   void setUp() {
     try (final ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory()) {
       service =
-          new DeleteUserService(deleteUserPort, getUserByIdPort, validatorFactory.getValidator());
+              new DeleteUserService(deleteUserPort, getUserByIdPort, validatorFactory.getValidator());
     }
   }
 
@@ -57,13 +57,13 @@ class DeleteUserServiceTest {
     final DeleteUserCommand command = new DeleteUserCommand("u-001");
 
     final UserModel existing =
-        new UserModel(
-            new UserId("u-001"),
-            new UserName("John Arrieta"),
-            new UserEmail("john@example.com"),
-            UserPassword.fromHash("$2a$12$abcdefghijklmnopqrstuO"),
-            UserRole.ADMIN,
-            UserStatus.ACTIVE);
+            new UserModel(
+                    new UserId("u-001"),
+                    new UserName("John Arrieta"),
+                    new UserEmail("john@example.com"),
+                    UserPassword.fromHash("$2a$12$abcdefghijklmnopqrstuO"),
+                    UserRole.ADMIN,
+                    UserStatus.ACTIVE);
 
     when(getUserByIdPort.getById(any())).thenReturn(Optional.of(existing));
 

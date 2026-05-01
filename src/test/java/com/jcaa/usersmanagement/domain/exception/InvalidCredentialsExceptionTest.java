@@ -20,23 +20,23 @@ class InvalidCredentialsExceptionTest {
   void shouldProduceDistinctNonBlankMessagesForEachAuthFailureScenario() {
     // Act
     final String invalidCredsMsg =
-        InvalidCredentialsException.becauseCredentialsAreInvalid().getMessage();
+            InvalidCredentialsException.becauseCredentialsAreInvalid().getMessage();
     final String inactiveUserMsg =
-        InvalidCredentialsException.becauseUserIsNotActive().getMessage();
+            InvalidCredentialsException.becauseUserIsNotActive().getMessage();
 
     // Assert
     assertAll(
-        "mensajes de autenticación fallida",
-        () ->
-            assertFalse(
-                invalidCredsMsg.isBlank(), "mensaje de credenciales inválidas no debe estar vacío"),
-        () ->
-            assertFalse(
-                inactiveUserMsg.isBlank(), "mensaje de usuario inactivo no debe estar vacío"),
-        () ->
-            assertNotEquals(
-                invalidCredsMsg,
-                inactiveUserMsg,
-                "cada escenario debe tener su propio mensaje para identificar la causa"));
+            "mensajes de autenticación fallida",
+            () ->
+                    assertFalse(
+                            invalidCredsMsg.isBlank(), "mensaje de credenciales inválidas no debe estar vacío"),
+            () ->
+                    assertFalse(
+                            inactiveUserMsg.isBlank(), "mensaje de usuario inactivo no debe estar vacío"),
+            () ->
+                    assertNotEquals(
+                            invalidCredsMsg,
+                            inactiveUserMsg,
+                            "cada escenario debe tener su propio mensaje para identificar la causa"));
   }
 }

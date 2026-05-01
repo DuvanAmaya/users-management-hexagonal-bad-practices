@@ -50,13 +50,13 @@ class LoginServiceTest {
     // La regla exige que cada bloque esté documentado con // Arrange, // Act, // Assert.
     final LoginCommand command = new LoginCommand(EMAIL, PASSWORD);
     final UserModel activeUser =
-        new UserModel(
-            new UserId("u-001"),
-            new UserName("John Arrieta"),
-            new UserEmail(EMAIL),
-            UserPassword.fromPlainText(PASSWORD),
-            UserRole.ADMIN,
-            UserStatus.ACTIVE);
+            new UserModel(
+                    new UserId("u-001"),
+                    new UserName("John Arrieta"),
+                    new UserEmail(EMAIL),
+                    UserPassword.fromPlainText(PASSWORD),
+                    UserRole.ADMIN,
+                    UserStatus.ACTIVE);
     when(getUserByEmailPort.getByEmail(any())).thenReturn(Optional.of(activeUser));
     final UserModel result = service.execute(command);
     // VIOLACIÓN Regla 11: se usa assertTrue(result != null) en lugar de assertNotNull(result).
@@ -84,13 +84,13 @@ class LoginServiceTest {
     final LoginCommand command = new LoginCommand(EMAIL, "WrongPass99");
 
     final UserModel user =
-        new UserModel(
-            new UserId("u-001"),
-            new UserName("John Arrieta"),
-            new UserEmail(EMAIL),
-            UserPassword.fromPlainText(PASSWORD),
-            UserRole.MEMBER,
-            UserStatus.ACTIVE);
+            new UserModel(
+                    new UserId("u-001"),
+                    new UserName("John Arrieta"),
+                    new UserEmail(EMAIL),
+                    UserPassword.fromPlainText(PASSWORD),
+                    UserRole.MEMBER,
+                    UserStatus.ACTIVE);
 
     when(getUserByEmailPort.getByEmail(any())).thenReturn(Optional.of(user));
 
@@ -104,13 +104,13 @@ class LoginServiceTest {
     final LoginCommand command = new LoginCommand(EMAIL, PASSWORD);
 
     final UserModel pendingUser =
-        new UserModel(
-            new UserId("u-001"),
-            new UserName("John Arrieta"),
-            new UserEmail(EMAIL),
-            UserPassword.fromPlainText(PASSWORD),
-            UserRole.MEMBER,
-            UserStatus.PENDING);
+            new UserModel(
+                    new UserId("u-001"),
+                    new UserName("John Arrieta"),
+                    new UserEmail(EMAIL),
+                    UserPassword.fromPlainText(PASSWORD),
+                    UserRole.MEMBER,
+                    UserStatus.PENDING);
 
     when(getUserByEmailPort.getByEmail(any())).thenReturn(Optional.of(pendingUser));
 

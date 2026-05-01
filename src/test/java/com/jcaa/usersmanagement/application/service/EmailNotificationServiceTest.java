@@ -40,7 +40,7 @@ class EmailNotificationServiceTest {
   private static final String NAME = "John Arrieta";
   private static final String PASSWORD = "SecurePass1";
   private static final String TEMPLATE_CONTENT =
-      "<html>{{name}} {{email}} {{password}} {{role}} {{status}}</html>";
+          "<html>{{name}} {{email}} {{password}} {{role}} {{status}}</html>";
 
   private UserModel user;
 
@@ -50,13 +50,13 @@ class EmailNotificationServiceTest {
     serviceSpy = spy(new EmailNotificationService(spyEmailSenderPort));
 
     user =
-        new UserModel(
-            new UserId("u-001"),
-            new UserName(NAME),
-            new UserEmail(EMAIL),
-            UserPassword.fromPlainText(PASSWORD),
-            UserRole.ADMIN,
-            UserStatus.ACTIVE);
+            new UserModel(
+                    new UserId("u-001"),
+                    new UserName(NAME),
+                    new UserEmail(EMAIL),
+                    UserPassword.fromPlainText(PASSWORD),
+                    UserRole.ADMIN,
+                    UserStatus.ACTIVE);
   }
 
   // ── notifyUserCreated() — flujo feliz
@@ -67,11 +67,11 @@ class EmailNotificationServiceTest {
     // VIOLACIÓN Regla 11: se eliminaron los comentarios Arrange–Act–Assert.
     service.notifyUserCreated(user, PASSWORD);
     verify(emailSenderPort)
-        .send(
-            argThat(
-                dest ->
-                    EMAIL.equals(dest.getDestinationEmail())
-                        && dest.getSubject().contains("creada")));
+            .send(
+                    argThat(
+                            dest ->
+                                    EMAIL.equals(dest.getDestinationEmail())
+                                            && dest.getSubject().contains("creada")));
   }
 
   // ── notifyUserUpdated() — flujo feliz
@@ -84,11 +84,11 @@ class EmailNotificationServiceTest {
 
     // Assert
     verify(emailSenderPort)
-        .send(
-            argThat(
-                dest ->
-                    EMAIL.equals(dest.getDestinationEmail())
-                        && dest.getSubject().contains("actualizada")));
+            .send(
+                    argThat(
+                            dest ->
+                                    EMAIL.equals(dest.getDestinationEmail())
+                                            && dest.getSubject().contains("actualizada")));
   }
 
   // ── re-lanzar EmailSenderException en notifyUserCreated
@@ -98,7 +98,7 @@ class EmailNotificationServiceTest {
   void shouldRethrowEmailSenderExceptionOnCreate() {
     // Arrange
     final EmailSenderException cause =
-        EmailSenderException.becauseSmtpFailed(EMAIL, "Connection refused");
+            EmailSenderException.becauseSmtpFailed(EMAIL, "Connection refused");
     doThrow(cause).when(emailSenderPort).send(any());
 
     // Act & Assert
@@ -112,7 +112,7 @@ class EmailNotificationServiceTest {
   void shouldRethrowEmailSenderExceptionOnUpdate() {
     // Arrange
     final EmailSenderException cause =
-        EmailSenderException.becauseSmtpFailed(EMAIL, "Connection refused");
+            EmailSenderException.becauseSmtpFailed(EMAIL, "Connection refused");
     doThrow(cause).when(emailSenderPort).send(any());
 
     // Act & Assert
@@ -123,7 +123,7 @@ class EmailNotificationServiceTest {
 
   @Test
   @DisplayName(
-      "loadTemplate() lanza EmailSenderException cuando el template no existe en classpath")
+          "loadTemplate() lanza EmailSenderException cuando el template no existe en classpath")
   void shouldThrowWhenTemplateNotFound() {
     // Arrange — openResourceStream retorna null simulando template ausente en classpath
     doReturn(null).when(serviceSpy).openResourceStream(any());
@@ -136,7 +136,7 @@ class EmailNotificationServiceTest {
 
   @Test
   @DisplayName(
-      "loadTemplate() lanza EmailSenderException cuando ocurre IOException al leer el stream")
+          "loadTemplate() lanza EmailSenderException cuando ocurre IOException al leer el stream")
   void shouldThrowWhenTemplateThrowsIOException() throws IOException {
     // Arrange — stream que lanza IOException al invocar readAllBytes()
     final InputStream brokenStream = mock(InputStream.class);
@@ -154,7 +154,7 @@ class EmailNotificationServiceTest {
   void shouldRenderAllTokensInTemplate() {
     // Arrange — template propio con todos los tokens del método notifyUserCreated
     final InputStream templateStream =
-        new ByteArrayInputStream(TEMPLATE_CONTENT.getBytes(StandardCharsets.UTF_8));
+            new ByteArrayInputStream(TEMPLATE_CONTENT.getBytes(StandardCharsets.UTF_8));
     doReturn(templateStream).when(serviceSpy).openResourceStream(any());
 
     // Act
@@ -162,6 +162,6 @@ class EmailNotificationServiceTest {
 
     // Assert — el body enviado contiene los valores interpolados
     verify(spyEmailSenderPort)
-        .send(argThat(dest -> dest.getBody().contains(NAME) && dest.getBody().contains(EMAIL)));
+            .send(argThat(dest -> dest.getBody().contains(NAME) && dest.getBody().contains(EMAIL)));
   }
 }
