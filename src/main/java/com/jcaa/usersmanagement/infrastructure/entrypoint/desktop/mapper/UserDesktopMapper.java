@@ -24,17 +24,17 @@ public final class UserDesktopMapper {
 
   public static CreateUserCommand toCreateCommand(final CreateUserRequest request) {
     return new CreateUserCommand(
-        request.id(), request.name(), request.email(), request.password(), request.role());
+            request.id(), request.name(), request.email(), request.password(), request.role());
   }
 
   public static UpdateUserCommand toUpdateCommand(final UpdateUserRequest request) {
     return new UpdateUserCommand(
-        request.id(),
-        request.name(),
-        request.email(),
-        request.password(),
-        request.role(),
-        request.status());
+            request.id(),
+            request.name(),
+            request.email(),
+            request.password(),
+            request.role(),
+            request.status());
   }
 
   public static DeleteUserCommand toDeleteCommand(final String id) {
@@ -52,11 +52,11 @@ public final class UserDesktopMapper {
 
   public static UserResponse toResponse(final UserModel user) {
     return new UserResponse(
-        user.getId().value(),
-        user.getName().value(),
-        user.getEmail().value(),
-        user.getRole().name(),
-        user.getStatus().name());
+            user.getId().value(),
+            user.getName().value(),
+            user.getEmail().value(),
+            user.getRole().name(),
+            user.getStatus().name());
   }
 
   public static List<UserResponse> toResponseList(final List<UserModel> users) {

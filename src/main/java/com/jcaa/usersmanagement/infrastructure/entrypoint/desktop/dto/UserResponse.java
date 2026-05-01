@@ -20,11 +20,11 @@ public class UserResponse {
   private String status;
 
   public UserResponse(
-      final String id,
-      final String name,
-      final String email,
-      final String role,
-      final String status) {
+          final String id,
+          final String name,
+          final String email,
+          final String role,
+          final String status) {
     this.id = id;
     this.name = name;
     this.email = email;
