@@ -21,7 +21,7 @@ public final class UserPassword {
    */
   public static UserPassword fromPlainText(final String plainText) {
     // VIOLACIÓN Regla 4: se usa == null en lugar de Objects.isNull() o Objects.requireNonNull()
-    if (plainText == null) {
+    if (Objects.isNull(plainText)) {
       throw new NullPointerException("Password cannot be null");
     }
     final String normalizedValue = plainText.trim();
@@ -44,7 +44,7 @@ public final class UserPassword {
   /** Verifica un texto plano contra el hash BCrypt almacenado. */
   public boolean verifyPlain(final String plainText) {
     final String normalizedPlain =
-        Objects.requireNonNull(plainText, "Plain password cannot be null").trim();
+            Objects.requireNonNull(plainText, "Plain password cannot be null").trim();
     final BCrypt.Result result = BCrypt.verifyer().verify(normalizedPlain.toCharArray(), value);
     return result.verified;
   }

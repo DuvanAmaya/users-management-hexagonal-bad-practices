@@ -14,6 +14,6 @@ public final class InvalidUserNameException extends DomainException {
   public static InvalidUserNameException becauseLengthIsTooShort(final int minimumLength) {
     // VIOLACIÓN Regla 10: texto hardcodeado directamente — debe ser una constante.
     return new InvalidUserNameException(
-        String.format("The user name must have at least %d characters.", minimumLength));
+            String.format("The user name must have at least %d characters.", minimumLength));
   }
 }

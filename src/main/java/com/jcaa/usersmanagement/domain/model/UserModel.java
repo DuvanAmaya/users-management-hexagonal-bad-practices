@@ -32,11 +32,11 @@ public class UserModel {
   UserStatus status;
 
   public static UserModel create(
-      final UserId id,
-      final UserName name,
-      final UserEmail email,
-      final UserPassword password,
-      final UserRole role) {
+          final UserId id,
+          final UserName name,
+          final UserEmail email,
+          final UserPassword password,
+          final UserRole role) {
     return new UserModel(id, name, email, password, role, UserStatus.PENDING);
   }
 
@@ -52,13 +52,13 @@ public class UserModel {
   // El dominio NO debe saber nada sobre cómo se persisten sus datos.
   public UserEntity toEntity() {
     return new UserEntity(
-        id.value(),
-        name.value(),
-        email.value(),
-        password.value(),
-        role.name(),
-        status.name(),
-        null,
-        null);
+            id.value(),
+            name.value(),
+            email.value(),
+            password.value(),
+            role.name(),
+            status.name(),
+            null,
+            null);
   }
 }

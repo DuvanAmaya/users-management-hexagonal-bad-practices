@@ -14,10 +14,10 @@ public final class EmailSenderException extends DomainException {
   }
 
   public static EmailSenderException becauseSmtpFailed(
-      final String destinationEmail, final String smtpError) {
+          final String destinationEmail, final String smtpError) {
     // VIOLACIÓN Regla 10: texto hardcodeado directamente — debe ser una constante.
     return new EmailSenderException(
-        String.format("No se pudo enviar el correo a '%s'. Error SMTP: %s", destinationEmail, smtpError));
+            String.format("No se pudo enviar el correo a '%s'. Error SMTP: %s", destinationEmail, smtpError));
   }
 
   public static EmailSenderException becauseSendFailed(final Throwable cause) {
@@ -25,3 +25,4 @@ public final class EmailSenderException extends DomainException {
     return new EmailSenderException("La notificación por correo no pudo ser enviada.", cause);
   }
 }
+

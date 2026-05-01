@@ -12,6 +12,6 @@ public final class InvalidUserPasswordException extends DomainException {
 
   public static InvalidUserPasswordException becauseLengthIsTooShort(final int minimumLength) {
     return new InvalidUserPasswordException(
-        String.format("The user password must have at least %d characters.", minimumLength));
+            String.format("The user password must have at least %d characters.", minimumLength));
   }
 }
