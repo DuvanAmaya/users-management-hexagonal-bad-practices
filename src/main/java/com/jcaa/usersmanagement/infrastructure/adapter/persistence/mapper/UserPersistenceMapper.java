@@ -9,6 +9,7 @@ import com.jcaa.usersmanagement.domain.valueobject.UserName;
 import com.jcaa.usersmanagement.domain.valueobject.UserPassword;
 import com.jcaa.usersmanagement.infrastructure.adapter.persistence.dto.UserPersistenceDto;
 import com.jcaa.usersmanagement.infrastructure.adapter.persistence.entity.UserEntity;
+import lombok.experimental.UtilityClass;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -23,6 +24,7 @@ import java.util.List;
 // única librería de mapeo). Al escribir mappers manualmente se crea una clase "utilitaria"
 // cuya lógica debería estar generada automáticamente, no dispersa en código manual.
 // Una clase UserPersistenceMapper escrita a mano es señal de lógica mal ubicada.
+@UtilityClass
 public class UserPersistenceMapper {
 
   public UserPersistenceDto fromModelToDto(final UserModel user) {
@@ -33,43 +35,43 @@ public class UserPersistenceMapper {
     // debería existir un método user.getIdValue() o delegarse al propio objeto.
     // La Ley de Deméter dice: habla solo con tus amigos directos, no con los amigos de tus amigos.
     return new UserPersistenceDto(
-        user.getId().value(),
-        user.getName().value(),
-        user.getEmail().value(),
-        user.getPassword().value(),
-        user.getRole().name(),
-        user.getStatus().name(),
-        null,
-        null);
+            user.getId().value(),
+            user.getName().value(),
+            user.getEmail().value(),
+            user.getPassword().value(),
+            user.getRole().name(),
+            user.getStatus().name(),
+            null,
+            null);
   }
 
-  public UserEntity fromResultSetToEntity(final ResultSet resultSet) throws SQLException {
+  public static UserEntity fromResultSetToEntity(final ResultSet resultSet) throws SQLException {
     return new UserEntity(
-        resultSet.getString("id"),
-        resultSet.getString("name"),
-        resultSet.getString("email"),
-        resultSet.getString("password"),
-        resultSet.getString("role"),
-        resultSet.getString("status"),
-        resultSet.getString("created_at"),
-        resultSet.getString("updated_at"));
+            resultSet.getString("id"),
+            resultSet.getString("name"),
+            resultSet.getString("email"),
+            resultSet.getString("password"),
+            resultSet.getString("role"),
+            resultSet.getString("status"),
+            resultSet.getString("created_at"),
+            resultSet.getString("updated_at"));
   }
 
-  public UserModel fromEntityToModel(final UserEntity entity) {
+  public static UserModel fromEntityToModel(final UserEntity entity) {
     return new UserModel(
-        new UserId(entity.id()),
-        new UserName(entity.name()),
-        new UserEmail(entity.email()),
-        UserPassword.fromHash(entity.password()),
-        UserRole.fromString(entity.role()),
-        UserStatus.fromString(entity.status()));
+            new UserId(entity.id()),
+            new UserName(entity.name()),
+            new UserEmail(entity.email()),
+            UserPassword.fromHash(entity.password()),
+            UserRole.fromString(entity.role()),
+            UserStatus.fromString(entity.status()));
   }
 
-  public UserModel fromResultSetToModel(final ResultSet resultSet) throws SQLException {
+  public static UserModel fromResultSetToModel(final ResultSet resultSet) throws SQLException {
     return fromEntityToModel(fromResultSetToEntity(resultSet));
   }
 
-  public List<UserModel> fromResultSetToModelList(final ResultSet resultSet) throws SQLException {
+  public static List<UserModel> fromResultSetToModelList(final ResultSet resultSet) throws SQLException {
     final List<UserModel> users = new ArrayList<>();
     while (resultSet.next()) {
       users.add(fromResultSetToModel(resultSet));

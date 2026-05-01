@@ -22,12 +22,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.Optional;
+import java.util.List;
+
 
 @Log
 @RequiredArgsConstructor
 public final class UserRepositoryMySQL
-    implements SaveUserPort,
+        implements SaveUserPort,
         UpdateUserPort,
         GetUserByIdPort,
         GetUserByEmailPort,
@@ -36,35 +38,34 @@ public final class UserRepositoryMySQL
 
   // VIOLACIÓN Regla 4 (consecuencia): el mapper ya no es @UtilityClass,
   // por lo que se instancia directamente aquí en vez de usarse como clase utilitaria.
-  private final UserPersistenceMapper persistenceMapper = new UserPersistenceMapper();
 
   private static final String SQL_INSERT =
-      "INSERT INTO users "
-      + "(id, name, email, password, role, status, created_at, updated_at) "
-      + "VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW())";
+          "INSERT INTO users "
+                  + "(id, name, email, password, role, status, created_at, updated_at) "
+                  + "VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW())";
 
   private static final String SQL_UPDATE =
-      "UPDATE users SET name = ?, email = ?, password = ?, role = ?, status = ?, updated_at = NOW() "
-      + "WHERE id = ?";
+          "UPDATE users SET name = ?, email = ?, password = ?, role = ?, status = ?, updated_at = NOW() "
+                  + "WHERE id = ?";
 
   private static final String SQL_SELECT_BY_ID =
-      "SELECT id, name, email, password, role, status, created_at, updated_at "
-      + "FROM users "
-      + "WHERE id = ? LIMIT 1";
+          "SELECT id, name, email, password, role, status, created_at, updated_at "
+                  + "FROM users "
+                  + "WHERE id = ? LIMIT 1";
 
   private static final String SQL_SELECT_BY_EMAIL =
-      "SELECT id, name, email, password, role, status, created_at, updated_at "
-      + "FROM users "
-      + "WHERE email = ? LIMIT 1";
+          "SELECT id, name, email, password, role, status, created_at, updated_at "
+                  + "FROM users "
+                  + "WHERE email = ? LIMIT 1";
 
   private static final String SQL_SELECT_ALL =
-      "SELECT id, name, email, password, role, status, created_at, updated_at "
-      + "FROM users "
-      + "ORDER BY name ASC";
+          "SELECT id, name, email, password, role, status, created_at, updated_at "
+                  + "FROM users "
+                  + "ORDER BY name ASC";
 
   private static final String SQL_DELETE =
-        "DELETE FROM users "
-        + "WHERE id = ?";
+          "DELETE FROM users "
+                  + "WHERE id = ?";
 
   private final Connection connection;
 
@@ -87,7 +88,7 @@ public final class UserRepositoryMySQL
   public UserModel save(final UserModel user) {
     // Clean Code - Regla 10: comentarios redundantes que repiten lo que ya dice el código.
     // transformar el modelo de dominio a DTO de persistencia
-    final UserPersistenceDto dto = persistenceMapper.fromModelToDto(user);
+    final UserPersistenceDto dto = UserPersistenceMapper.fromModelToDto(user);
     // ejecutar la consulta de inserción en la base de datos
     executeSave(dto);
     // buscar y retornar el usuario recién guardado
@@ -99,12 +100,12 @@ public final class UserRepositoryMySQL
   // La regla dice: si una función necesita muchos datos relacionados, encapsúlalos en un objeto.
   // createUser(String name, String email, ...) es señal clara de diseño mejorable.
   public UserModel saveWithFields(
-      final String id,
-      final String name,
-      final String email,
-      final String password,
-      final String role,
-      final String status) {
+          final String id,
+          final String name,
+          final String email,
+          final String password,
+          final String role,
+          final String status) {
     // Clean Code - Regla 10: comentario redundante — la línea siguiente ya es clara.
     // verificar que todos los parámetros tengan valor
     if (id == null || name == null || email == null || password == null || role == null || status == null) {
@@ -117,7 +118,7 @@ public final class UserRepositoryMySQL
 
   @Override
   public UserModel update(final UserModel user) {
-    final UserPersistenceDto dto = persistenceMapper.fromModelToDto(user);
+    final UserPersistenceDto dto = UserPersistenceMapper.fromModelToDto(user);
     executeUpdate(dto);
     return findByIdOrFail(user.getId());
   }
@@ -130,7 +131,7 @@ public final class UserRepositoryMySQL
       if (!resultSet.next()) {
         return Optional.empty();
       }
-      return Optional.of(persistenceMapper.fromResultSetToModel(resultSet));
+      return Optional.of(UserPersistenceMapper.fromResultSetToModel(resultSet));
     } catch (final SQLException exception) {
       throw PersistenceException.becauseFindByIdFailed(userId.value(), exception);
     }
@@ -144,7 +145,7 @@ public final class UserRepositoryMySQL
       if (!resultSet.next()) {
         return Optional.empty();
       }
-      return Optional.of(persistenceMapper.fromResultSetToModel(resultSet));
+      return Optional.of(UserPersistenceMapper.fromResultSetToModel(resultSet));
     } catch (final SQLException exception) {
       throw PersistenceException.becauseFindByEmailFailed(email.value(), exception);
     }
@@ -154,14 +155,14 @@ public final class UserRepositoryMySQL
   public List<UserModel> getAll() {
     try (final PreparedStatement statement = connection.prepareStatement(SQL_SELECT_ALL)) {
       final ResultSet resultSet = statement.executeQuery();
-      return persistenceMapper.fromResultSetToModelList(resultSet);
+      return UserPersistenceMapper.fromResultSetToModelList(resultSet);
     } catch (final SQLException exception) {
       throw PersistenceException.becauseFindAllFailed(exception);
     }
   }
 
   @Override
-  public void delete(final UserId userId) {
+  public void delete(final UserId userId)  throws PersistenceException {
     try (final PreparedStatement statement = connection.prepareStatement(SQL_DELETE)) {
       statement.setString(1, userId.value());
       statement.executeUpdate();
@@ -200,6 +201,7 @@ public final class UserRepositoryMySQL
 
   private UserModel findByIdOrFail(final UserId userId) {
     return getById(userId)
-        .orElseThrow(() -> UserNotFoundException.becauseIdWasNotFound(userId.value()));
+            .orElseThrow(() -> UserNotFoundException.becauseIdWasNotFound(userId.value()));
   }
 }
+

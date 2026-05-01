@@ -13,17 +13,17 @@ public final class PersistenceException extends RuntimeException {
   }
 
   public static PersistenceException becauseUpdateFailed(
-      final String userId, final Throwable cause) {
+          final String userId, final Throwable cause) {
     return new PersistenceException(String.format("Failed to update user with ID: '%s'.", userId), cause);
   }
 
   public static PersistenceException becauseFindByIdFailed(
-      final String userId, final Throwable cause) {
+          final String userId, final Throwable cause) {
     return new PersistenceException(String.format("Failed to find user with ID: '%s'.", userId), cause);
   }
 
   public static PersistenceException becauseFindByEmailFailed(
-      final String email, final Throwable cause) {
+          final String email, final Throwable cause) {
     return new PersistenceException(String.format("Failed to find user with email: '%s'.", email), cause);
   }
 
@@ -32,7 +32,7 @@ public final class PersistenceException extends RuntimeException {
   }
 
   public static PersistenceException becauseDeleteFailed(
-      final String userId, final Throwable cause) {
+          final String userId, final Throwable cause) {
     return new PersistenceException(String.format("Failed to delete user with ID: '%s'.", userId), cause);
   }
 

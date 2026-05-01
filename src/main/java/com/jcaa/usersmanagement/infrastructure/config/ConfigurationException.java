@@ -12,3 +12,4 @@ public final class ConfigurationException extends RuntimeException {
     return new ConfigurationException("Failed to load the application configuration.", cause);
   }
 }
+

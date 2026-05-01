@@ -41,21 +41,21 @@ public final class JavaMailEmailSenderAdapter implements EmailSenderPort {
       log.log(Level.INFO, SENDER_EMAIL_LOG, destination.getDestinationEmail());
     } catch (final MessagingException | UnsupportedEncodingException exception) {
       throw EmailSenderException.becauseSmtpFailed(
-          destination.getDestinationEmail(), exception.getMessage());
+              destination.getDestinationEmail(), exception.getMessage());
     }
   }
 
   private MimeMessage buildMessage(final EmailDestinationModel destination)
-      throws MessagingException, UnsupportedEncodingException {
+          throws MessagingException, UnsupportedEncodingException {
     final MimeMessage message = new MimeMessage(mailSession);
     // VIOLACIÓN Regla 4: se usa el nombre completo de la clase InternetAddress dentro del código.
     // Solo debe usarse el nombre completo cuando hay ambigüedad; en este caso no la hay
     // ya que está importado correctamente con el wildcard.
-    message.setFrom(new javax.mail.internet.InternetAddress(fromAddress, fromName, CHARSET_UTF8));
+    message.setFrom(new InternetAddress(fromAddress, fromName, CHARSET_UTF8));
     message.addRecipient(
-        Message.RecipientType.TO,
-        new InternetAddress(
-            destination.getDestinationEmail(), destination.getDestinationName(), CHARSET_UTF8));
+            Message.RecipientType.TO,
+            new InternetAddress(
+                    destination.getDestinationEmail(), destination.getDestinationName(), CHARSET_UTF8));
     message.setSubject(destination.getSubject(), CHARSET_UTF8);
     message.setContent(destination.getBody(), CONTENT_TYPE_HTML);
     return message;
@@ -64,13 +64,13 @@ public final class JavaMailEmailSenderAdapter implements EmailSenderPort {
   private static Session buildSession(final SmtpConfig config) {
     final Properties properties = buildSmtpProperties(config);
     return Session.getInstance(
-        properties,
-        new Authenticator() {
-          @Override
-          protected PasswordAuthentication getPasswordAuthentication() {
-            return new PasswordAuthentication(config.username(), config.password());
-          }
-        });
+            properties,
+            new Authenticator() {
+              @Override
+              protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(config.username(), config.password());
+              }
+            });
   }
 
   private static Properties buildSmtpProperties(final SmtpConfig config) {
@@ -82,3 +82,4 @@ public final class JavaMailEmailSenderAdapter implements EmailSenderPort {
     return properties;
   }
 }
+
