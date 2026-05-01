@@ -36,7 +36,6 @@ class DatabaseConnectionFactoryTest {
   @BeforeEach
   void setUp() {
     config = new DatabaseConfig(HOST, PORT, DB_NAME, USERNAME, PASSWORD);
-    factory = new DatabaseConnectionFactory();
   }
 
   // ── createConnection() — happy path
@@ -47,11 +46,11 @@ class DatabaseConnectionFactoryTest {
     // Arrange
     try (final MockedStatic<DriverManager> mockedDriverManager = mockStatic(DriverManager.class)) {
       mockedDriverManager
-          .when(() -> DriverManager.getConnection(any(), any(), any()))
-          .thenReturn(mockConnection);
+              .when(() -> DriverManager.getConnection(any(), any(), any()))
+              .thenReturn(mockConnection);
 
       // Act
-      final Connection result = factory.createConnection(config);
+      final Connection result = DatabaseConnectionFactory.createConnection(config);
 
       // Assert
       assertSame(mockConnection, result, "must return the connection provided by DriverManager");
@@ -68,14 +67,14 @@ class DatabaseConnectionFactoryTest {
     final SQLException cause = new SQLException("Connection refused");
     try (final MockedStatic<DriverManager> mockedDriverManager = mockStatic(DriverManager.class)) {
       mockedDriverManager
-          .when(() -> DriverManager.getConnection(any(), any(), any()))
-          .thenThrow(cause);
+              .when(() -> DriverManager.getConnection(any(), any(), any()))
+              .thenThrow(cause);
 
       // Act + Assert
       assertThrows(
-          PersistenceException.class,
-          () -> factory.createConnection(config),
-          "must throw PersistenceException when DriverManager throws SQLException");
+              PersistenceException.class,
+              () -> DatabaseConnectionFactory.createConnection(config),
+              "must throw PersistenceException when DriverManager throws SQLException");
     }
   }
 }

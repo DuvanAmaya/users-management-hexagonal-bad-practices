@@ -44,7 +44,7 @@ class JavaMailEmailSenderAdapterTest {
   @BeforeEach
   void setUp() {
     final SmtpConfig config =
-        new SmtpConfig(HOST, PORT, USERNAME, PASSWORD, FROM_ADDRESS, FROM_NAME);
+            new SmtpConfig(HOST, PORT, USERNAME, PASSWORD, FROM_ADDRESS, FROM_NAME);
     adapter = new JavaMailEmailSenderAdapter(config);
     destination = new EmailDestinationModel(DEST_EMAIL, DEST_NAME, SUBJECT, BODY);
   }
@@ -81,10 +81,10 @@ class JavaMailEmailSenderAdapterTest {
 
       // Act & Assert
       final EmailSenderException exception =
-          assertThrows(EmailSenderException.class, () -> adapter.send(destination));
+              assertThrows(EmailSenderException.class, () -> adapter.send(destination));
       assertTrue(
-          exception.getMessage().contains(DEST_EMAIL),
-          "exception message must identify the recipient email");
+              exception.getMessage().contains(DEST_EMAIL),
+              "exception message must identify the recipient email");
     }
   }
 
@@ -102,12 +102,12 @@ class JavaMailEmailSenderAdapterTest {
     // Act — Session.requestPasswordAuthentication() internally invokes the stored
     // Authenticator's getPasswordAuthentication(), covering that branch
     final PasswordAuthentication auth =
-        mailSession.requestPasswordAuthentication(null, PORT, "smtp", "Login", USERNAME);
+            mailSession.requestPasswordAuthentication(null, PORT, "smtp", "Login", USERNAME);
 
     // Assert
     assertAll(
-        "credentials must match SmtpConfig",
-        () -> assertEquals(USERNAME, auth.getUserName()),
-        () -> assertEquals(PASSWORD, auth.getPassword()));
+            "credentials must match SmtpConfig",
+            () -> assertEquals(USERNAME, auth.getUserName()),
+            () -> assertEquals(PASSWORD, auth.getPassword()));
   }
 }

@@ -40,21 +40,19 @@ class UserPersistenceMapperTest {
   @Mock private ResultSet resultSet;
 
   // VIOLACIÓN Regla 4 (consecuencia): el mapper ya no es @UtilityClass, hay que instanciarlo.
-  private UserPersistenceMapper mapper;
   private UserModel userModel;
   private UserEntity userEntity;
 
   @BeforeEach
   void setUp() {
-    mapper = new UserPersistenceMapper();
     userModel =
-        new UserModel(
-            new UserId(ID),
-            new UserName(NAME),
-            new UserEmail(EMAIL),
-            UserPassword.fromHash(HASH),
-            UserRole.ADMIN,
-            UserStatus.ACTIVE);
+            new UserModel(
+                    new UserId(ID),
+                    new UserName(NAME),
+                    new UserEmail(EMAIL),
+                    UserPassword.fromHash(HASH),
+                    UserRole.ADMIN,
+                    UserStatus.ACTIVE);
 
     userEntity = new UserEntity(ID, NAME, EMAIL, HASH, ROLE, STATUS, CREATED_AT, UPDATED_AT);
   }
@@ -65,19 +63,19 @@ class UserPersistenceMapperTest {
   @DisplayName("fromModelToDto() maps all UserModel fields and sets null timestamps")
   void shouldMapModelToDto() {
     // Act
-    final UserPersistenceDto result = mapper.fromModelToDto(userModel);
+    final UserPersistenceDto result = UserPersistenceMapper.fromModelToDto(userModel);
 
     // Assert
     assertAll(
-        "fromModelToDto()",
-        () -> assertEquals(ID, result.id(), "id"),
-        () -> assertEquals(NAME, result.name(), "name"),
-        () -> assertEquals(EMAIL, result.email(), "email"),
-        () -> assertEquals(HASH, result.password(), "password"),
-        () -> assertEquals(ROLE, result.role(), "role"),
-        () -> assertEquals(STATUS, result.status(), "status"),
-        () -> assertNull(result.createdAt(), "createdAt must be null"),
-        () -> assertNull(result.updatedAt(), "updatedAt must be null"));
+            "fromModelToDto()",
+            () -> assertEquals(ID, result.id(), "id"),
+            () -> assertEquals(NAME, result.name(), "name"),
+            () -> assertEquals(EMAIL, result.email(), "email"),
+            () -> assertEquals(HASH, result.password(), "password"),
+            () -> assertEquals(ROLE, result.role(), "role"),
+            () -> assertEquals(STATUS, result.status(), "status"),
+            () -> assertNull(result.createdAt(), "createdAt must be null"),
+            () -> assertNull(result.updatedAt(), "updatedAt must be null"));
   }
 
   // ── fromEntityToModel()
@@ -86,16 +84,16 @@ class UserPersistenceMapperTest {
   @DisplayName("fromEntityToModel() maps all UserEntity fields to a domain UserModel")
   void shouldMapEntityToModel() {
     // Act
-    final UserModel result = mapper.fromEntityToModel(userEntity);
+    final UserModel result = UserPersistenceMapper.fromEntityToModel(userEntity);
 
     // Assert
     assertAll(
-        "fromEntityToModel()",
-        () -> assertEquals(ID, result.getId().value(), "id"),
-        () -> assertEquals(NAME, result.getName().value(), "name"),
-        () -> assertEquals(EMAIL, result.getEmail().value(), "email"),
-        () -> assertEquals(UserRole.ADMIN, result.getRole(), "role"),
-        () -> assertEquals(UserStatus.ACTIVE, result.getStatus(), "status"));
+            "fromEntityToModel()",
+            () -> assertEquals(ID, result.getId().value(), "id"),
+            () -> assertEquals(NAME, result.getName().value(), "name"),
+            () -> assertEquals(EMAIL, result.getEmail().value(), "email"),
+            () -> assertEquals(UserRole.ADMIN, result.getRole(), "role"),
+            () -> assertEquals(UserStatus.ACTIVE, result.getStatus(), "status"));
   }
 
   // ── fromResultSetToEntity() — happy path
@@ -114,19 +112,19 @@ class UserPersistenceMapperTest {
     when(resultSet.getString("updated_at")).thenReturn(UPDATED_AT);
 
     // Act
-    final UserEntity result = mapper.fromResultSetToEntity(resultSet);
+    final UserEntity result = UserPersistenceMapper.fromResultSetToEntity(resultSet);
 
     // Assert
     assertAll(
-        "fromResultSetToEntity()",
-        () -> assertEquals(ID, result.id(), "id"),
-        () -> assertEquals(NAME, result.name(), "name"),
-        () -> assertEquals(EMAIL, result.email(), "email"),
-        () -> assertEquals(HASH, result.password(), "password"),
-        () -> assertEquals(ROLE, result.role(), "role"),
-        () -> assertEquals(STATUS, result.status(), "status"),
-        () -> assertEquals(CREATED_AT, result.createdAt(), "createdAt"),
-        () -> assertEquals(UPDATED_AT, result.updatedAt(), "updatedAt"));
+            "fromResultSetToEntity()",
+            () -> assertEquals(ID, result.id(), "id"),
+            () -> assertEquals(NAME, result.name(), "name"),
+            () -> assertEquals(EMAIL, result.email(), "email"),
+            () -> assertEquals(HASH, result.password(), "password"),
+            () -> assertEquals(ROLE, result.role(), "role"),
+            () -> assertEquals(STATUS, result.status(), "status"),
+            () -> assertEquals(CREATED_AT, result.createdAt(), "createdAt"),
+            () -> assertEquals(UPDATED_AT, result.updatedAt(), "updatedAt"));
   }
 
   // ── fromResultSetToEntity() — SQLException propagation
@@ -139,9 +137,9 @@ class UserPersistenceMapperTest {
 
     // Act + Assert
     assertThrows(
-        SQLException.class,
-        () -> mapper.fromResultSetToEntity(resultSet),
-        "must propagate SQLException when ResultSet throws on getString");
+            SQLException.class,
+            () -> UserPersistenceMapper.fromResultSetToEntity(resultSet),
+            "must propagate SQLException when ResultSet throws on getString");
   }
 
   // ── fromResultSetToModelList() — empty
@@ -153,7 +151,7 @@ class UserPersistenceMapperTest {
     when(resultSet.next()).thenReturn(false);
 
     // Act
-    final List<UserModel> result = mapper.fromResultSetToModelList(resultSet);
+    final List<UserModel> result = UserPersistenceMapper.fromResultSetToModelList(resultSet);
 
     // Assert
     assertTrue(result.isEmpty(), "must return an empty list when ResultSet has no rows");
@@ -176,7 +174,7 @@ class UserPersistenceMapperTest {
     when(resultSet.getString("updated_at")).thenReturn(UPDATED_AT, UPDATED_AT);
 
     // Act
-    final List<UserModel> result = mapper.fromResultSetToModelList(resultSet);
+    final List<UserModel> result = UserPersistenceMapper.fromResultSetToModelList(resultSet);
 
     // Assert
     assertEquals(2, result.size(), "must return one model per row in the ResultSet");
@@ -193,8 +191,8 @@ class UserPersistenceMapperTest {
 
     // Act + Assert
     assertThrows(
-        SQLException.class,
-        () -> mapper.fromResultSetToModelList(resultSet),
-        "must propagate SQLException when a row fails to be read");
+            SQLException.class,
+            () -> UserPersistenceMapper.fromResultSetToModelList(resultSet),
+            "must propagate SQLException when a row fails to be read");
   }
 }
